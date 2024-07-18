@@ -1,10 +1,10 @@
 <template>
   <div class="login">
     <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">若依后台管理系统</h3>
-      <el-form-item prop="username">
+      <h3 class="title">后台管理系统</h3>
+      <el-form-item prop="user_name">
         <el-input
-          v-model="loginForm.username"
+          v-model="loginForm.user_name"
           type="text"
           size="large"
           auto-complete="off"
@@ -25,21 +25,6 @@
           <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template>
         </el-input>
       </el-form-item>
-      <el-form-item prop="code" v-if="captchaEnabled">
-        <el-input
-          v-model="loginForm.code"
-          size="large"
-          auto-complete="off"
-          placeholder="验证码"
-          style="width: 63%"
-          @keyup.enter="handleLogin"
-        >
-          <template #prefix><svg-icon icon-class="validCode" class="el-input__icon input-icon" /></template>
-        </el-input>
-        <div class="login-code">
-          <img :src="codeUrl" @click="getCode" class="login-code-img"/>
-        </div>
-      </el-form-item>
       <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
       <el-form-item style="width:100%;">
         <el-button
@@ -52,14 +37,13 @@
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
         </el-button>
-        <div style="float: right;" v-if="register">
-          <router-link class="link-type" :to="'/register'">立即注册</router-link>
-        </div>
+        <router-link v-if="register" class="link-type" :to="'/register'">立即注册</router-link>
+      
       </el-form-item>
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2018-2024 ruoyi.vip All Rights Reserved.</span>
+      <span>Copyright © 2018-2024 ilySusu All Rights Reserved.</span>
     </div>
   </div>
 </template>
@@ -76,17 +60,15 @@ const router = useRouter();
 const { proxy } = getCurrentInstance();
 
 const loginForm = ref({
-  username: "admin",
-  password: "admin123",
+  user_name: "admin",
+  password: "123123",
   rememberMe: false,
-  code: "",
   uuid: ""
 });
 
 const loginRules = {
-  username: [{ required: true, trigger: "blur", message: "请输入您的账号" }],
+  user_name: [{ required: true, trigger: "blur", message: "请输入您的账号" }],
   password: [{ required: true, trigger: "blur", message: "请输入您的密码" }],
-  code: [{ required: true, trigger: "change", message: "请输入验证码" }]
 };
 
 const codeUrl = ref("");
@@ -94,7 +76,7 @@ const loading = ref(false);
 // 验证码开关
 const captchaEnabled = ref(true);
 // 注册开关
-const register = ref(false);
+const register = ref(true);
 const redirect = ref(undefined);
 
 watch(route, (newRoute) => {
@@ -107,12 +89,12 @@ function handleLogin() {
       loading.value = true;
       // 勾选了需要记住密码设置在 cookie 中设置记住用户名和密码
       if (loginForm.value.rememberMe) {
-        Cookies.set("username", loginForm.value.username, { expires: 30 });
+        Cookies.set("user_name", loginForm.value.user_name, { expires: 30 });
         Cookies.set("password", encrypt(loginForm.value.password), { expires: 30 });
         Cookies.set("rememberMe", loginForm.value.rememberMe, { expires: 30 });
       } else {
         // 否则移除
-        Cookies.remove("username");
+        Cookies.remove("user_name");
         Cookies.remove("password");
         Cookies.remove("rememberMe");
       }
@@ -130,7 +112,7 @@ function handleLogin() {
         loading.value = false;
         // 重新获取验证码
         if (captchaEnabled.value) {
-          getCode();
+          // getCode();
         }
       });
     }
@@ -148,17 +130,17 @@ function getCode() {
 }
 
 function getCookie() {
-  const username = Cookies.get("username");
+  const user_name = Cookies.get("user_name");
   const password = Cookies.get("password");
   const rememberMe = Cookies.get("rememberMe");
   loginForm.value = {
-    username: username === undefined ? loginForm.value.username : username,
+    user_name: user_name === undefined ? loginForm.value.user_name : user_name,
     password: password === undefined ? loginForm.value.password : decrypt(password),
     rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
   };
 }
 
-getCode();
+// getCode();
 getCookie();
 </script>
 

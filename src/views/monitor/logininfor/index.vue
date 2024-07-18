@@ -214,11 +214,11 @@ function handleClean() {
 
 /** 解锁按钮操作 */
 function handleUnlock() {
-  const username = selectName.value;
-  proxy.$modal.confirm('是否确认解锁用户"' + username + '"数据项?').then(function () {
-    return unlockLogininfor(username);
+  const user_name = selectName.value;
+  proxy.$modal.confirm('是否确认解锁用户"' + user_name + '"数据项?').then(function () {
+    return unlockLogininfor(user_name);
   }).then(() => {
-    proxy.$modal.msgSuccess("用户" + username + "解锁成功");
+    proxy.$modal.msgSuccess("用户" + user_name + "解锁成功");
   }).catch(() => {});
 }
 

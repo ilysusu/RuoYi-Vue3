@@ -1,15 +1,15 @@
 import request from '@/utils/request'
 
 // 登录方法
-export function login(username, password, code, uuid) {
+export function login(user_name, password, code, uuid) {
   const data = {
-    username,
+    user_name,
     password,
     code,
     uuid
   }
   return request({
-    url: '/login',
+    url: '/user/login',
     headers: {
       isToken: false,
       repeatSubmit: false
@@ -22,7 +22,7 @@ export function login(username, password, code, uuid) {
 // 注册方法
 export function register(data) {
   return request({
-    url: '/register',
+    url: 'user/register',
     headers: {
       isToken: false
     },

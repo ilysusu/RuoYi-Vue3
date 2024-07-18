@@ -1,10 +1,10 @@
 <template>
   <div class="register">
     <el-form ref="registerRef" :model="registerForm" :rules="registerRules" class="register-form">
-      <h3 class="title">若依后台管理系统</h3>
-      <el-form-item prop="username">
+      <h3 class="title">后台管理系统</h3>
+      <el-form-item prop="user_name">
         <el-input 
-          v-model="registerForm.username" 
+          v-model="registerForm.user_name" 
           type="text" 
           size="large" 
           auto-complete="off" 
@@ -37,21 +37,6 @@
           <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template>
         </el-input>
       </el-form-item>
-      <el-form-item prop="code" v-if="captchaEnabled">
-        <el-input
-          size="large" 
-          v-model="registerForm.code"
-          auto-complete="off"
-          placeholder="验证码"
-          style="width: 63%"
-          @keyup.enter="handleRegister"
-        >
-          <template #prefix><svg-icon icon-class="validCode" class="el-input__icon input-icon" /></template>
-        </el-input>
-        <div class="register-code">
-          <img :src="codeUrl" @click="getCode" class="register-code-img"/>
-        </div>
-      </el-form-item>
       <el-form-item style="width:100%;">
         <el-button
           :loading="loading"
@@ -70,7 +55,7 @@
     </el-form>
     <!--  底部  -->
     <div class="el-register-footer">
-      <span>Copyright © 2018-2024 ruoyi.vip All Rights Reserved.</span>
+      <span>Copyright © 2018-2024 ilySusu. All Rights Reserved.</span>
     </div>
   </div>
 </template>
@@ -83,7 +68,7 @@ const router = useRouter();
 const { proxy } = getCurrentInstance();
 
 const registerForm = ref({
-  username: "",
+  user_name: "",
   password: "",
   confirmPassword: "",
   code: "",
@@ -99,7 +84,7 @@ const equalToPassword = (rule, value, callback) => {
 };
 
 const registerRules = {
-  username: [
+  user_name: [
     { required: true, trigger: "blur", message: "请输入您的账号" },
     { min: 2, max: 20, message: "用户账号长度必须介于 2 和 20 之间", trigger: "blur" }
   ],
@@ -124,8 +109,8 @@ function handleRegister() {
     if (valid) {
       loading.value = true;
       register(registerForm.value).then(res => {
-        const username = registerForm.value.username;
-        ElMessageBox.alert("<font color='red'>恭喜你，您的账号 " + username + " 注册成功！</font>", "系统提示", {
+        const user_name = registerForm.value.user_name;
+        ElMessageBox.alert("<font color='red'>恭喜你，您的账号 " + user_name + " 注册成功！</font>", "系统提示", {
           dangerouslyUseHTMLString: true,
           type: "success",
         }).then(() => {
@@ -134,7 +119,7 @@ function handleRegister() {
       }).catch(() => {
         loading.value = false;
         if (captchaEnabled) {
-          getCode();
+          // getCode();
         }
       });
     }
@@ -151,7 +136,7 @@ function getCode() {
   });
 }
 
-getCode();
+// getCode();
 </script>
 
 <style lang='scss' scoped>
